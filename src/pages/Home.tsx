@@ -1,19 +1,15 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 function Home() {
-    return (
+    const navigate = useNavigate();
 
+    return (
         <div className="flex-container">
             <div>
-                <h1>Welcome to the Home page!</h1>
-                <p>Here you can find information about our company and what we do.</p>
+                <h1>Tranforming music into stunning visual displays of color</h1>
+                <p>This sound color generator is an innovative ...............................</p>
+                <button onClick={() => navigate("/generate")}>Proceed</button>
             </div>
-            <div>Flex Direction</div>
-            <div>Flex-Wrap</div>
-            <div>Flex-Flop</div>
-            <div>Justify-Content</div>
-            <div>Align-items</div>
-            <div>Align-Content</div>
         </div>
     );
 }
