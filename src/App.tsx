@@ -35,7 +35,8 @@ import About from './pages/About';
 import ContactUs from './pages/ContactUs';
 import DailyDose from './pages/DailyDose';
 import Home from './pages/Home';
-import Generate from './pages/Generate';
+import Register from './pages/Generate';
+import Login from './pages/Login';
 
 function App() {
 
@@ -47,7 +48,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/daily-dose" element={<DailyDose />} />
         <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/generate" element={<Generate />} />
+        <Route path="/generate" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </div>
   );
