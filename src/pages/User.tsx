@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import User from './User';
-function Login() {
+import DynamicForm from './DynamicForm';
+function User(props: any) {
     const [username, setUsername] = useState('');
     // const [password, setPassword] = useState('');
     // const [age, setAge] = useState('');
-    const [data, setData] = useState(null)
-
     const navigate = useNavigate();
 
     const handleSubmit = async (event: any) => {
@@ -24,9 +22,7 @@ function Login() {
             });
 
             const data = await response.json();
-            if (data) {
-                setData(data)
-            }
+            console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -34,17 +30,10 @@ function Login() {
 
     return (
         <div>
-            {!data && <form onSubmit={handleSubmit}>
-                <label>
-                    Username:
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-                </label>
-                <button type="submit">Login</button>
-                <button onClick={() => navigate("/register")}>Register</button>
-            </form>}
-            {data && <User user={data} />}
+            {props.user._id && <DynamicForm id={props.user._id} />}
+
         </div>
     );
 }
 
-export default Login;
+export default User;

@@ -4,6 +4,7 @@ function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [age, setAge] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
@@ -20,6 +21,7 @@ function Register() {
             });
 
             const data = await response.json();
+            navigate("/login")
             console.log(data);
         } catch (error) {
             console.error(error);

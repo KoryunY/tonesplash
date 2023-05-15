@@ -35,9 +35,8 @@ import About from './pages/About';
 import ContactUs from './pages/ContactUs';
 import DailyDose from './pages/DailyDose';
 import Home from './pages/Home';
-import Register from './pages/Generate';
+import Register from './pages/Register';
 import Login from './pages/Login';
-
 function App() {
 
   return (
@@ -50,6 +49,10 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/demo" Component={() => {
+          window.location.href = '/demo.html';
+          return null;
+        }} />
       </Routes>
     </div>
   );
