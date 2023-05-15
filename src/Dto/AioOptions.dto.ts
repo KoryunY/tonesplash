@@ -179,3 +179,9 @@ export interface AioOptionsDto {
     user: string,
     useCustomFft?: boolean,
 }
+
+export interface Config {
+    name: string,
+    type: Genre | Tempo | Energy | Sentiment | Instrument,
+    colors: string[];
+}
