@@ -23,9 +23,9 @@ function User(props: any) {
     return (
         <div className='disableCaret'>
             <ul>
-                <li onClick={() => setSelectedItem('DynamicForm')}>Generate Colors</li>
-                <li onClick={() => setSelectedItem('Configs')}>Create Configs</li>
-                <li onClick={() => setSelectedItem('Data')}>User Info</li>
+                <li onClick={() => setSelectedItem('DynamicForm')} style={{ color: '#593353', borderRadius: '40px', marginTop: '10px', width: 200 }} className={selectedItem === 'DynamicForm' ? 'selected' : ''}>Generate Colors</li>
+                <li onClick={() => setSelectedItem('Configs')} style={{ color: '#593353', borderRadius: '40px', marginTop: '10px', width: 200 }} className={selectedItem === 'Configs' ? 'selected' : ''}>Create Configs</li>
+                <li onClick={() => setSelectedItem('Data')} style={{ color: '#593353', borderRadius: '40px', marginTop: '10px', width: 200 }} className={selectedItem === 'Data' ? 'selected' : ''}>User Info</li>
             </ul>
             {renderPage()}
         </div>

@@ -7,23 +7,23 @@ ul {
 li {
     display: inline-block;
     margin-right: 10px;
-    cursor: pointer;
     padding: 5px 10px;
-    background-color: #f0f0f0;
-    color: #333;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-    /* Remove blinking line */
+    border-width: 5;
+    border-style: solid;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    background-color: '#c0a4fb';
+    /* Make the text bold */
+    /* Center align the text */
 }
 
 li:hover {
-    background-color: #ccc;
+    background-color: #c0a4fb;
 }
 
 li.selected {
-    background-color: #333;
-    color: #fff;
+    background-color: #c0a4fb;
 }
 
 .disableCaret {
