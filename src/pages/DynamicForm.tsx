@@ -16,6 +16,8 @@ const DynamicForm = (props: any) => {
     const [sentiment, setSentiment] = useState<Sentiment | null>(null);
 
     const [gradientSplitCount, setGradientSplitCount] = useState<number | null>(null);
+    const [familyCount, setFamilyCount] = useState<number | null>(null);
+
     const [saveAndReturnOption, setSaveAndReturnOption] = useState<SaveAndReturnOption>(SaveAndReturnOption.RETURN_DEMO);
     const [isCheckedCustomFft, setIsChecked] = useState(false);
     const [isCheckedUseIntervals, setIsCheckedUseIntervals] = useState(false);
@@ -69,11 +71,25 @@ const DynamicForm = (props: any) => {
     const handleCheckboxChangeUseIntervals = (e: any) => {
         setIsCheckedUseIntervals(e.target.checked);
     };
+
     const handleConvertingTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setConvertingType(e.target.value as ConvertingType);
     };
+
     const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setGenre(e.target.value as Genre);
+    };
+
+    const handleSentimentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSentiment(e.target.value as Sentiment);
+    };
+
+    const handleInstrumentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setInstrument(e.target.value as Instrument);
+    };
+
+    const handleTempoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setTempo(e.target.value as Tempo);
     };
 
     const handleSaveAndReturnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -93,6 +109,12 @@ const DynamicForm = (props: any) => {
         );
     };
 
+    const handleFamilyCountCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFamilyCount(
+            parseInt(e.target.value),
+        );
+    };
+
     const openNewPage = () => {
         const newWindow = window.open('', '_blank');
         newWindow?.document.write(htmlContent);
@@ -102,20 +124,25 @@ const DynamicForm = (props: any) => {
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Get the specific form values based on the convertingType
         let specificValues;
         switch (convertingType) {
             case ConvertingType.AIO:
                 specificValues = {
-
+                    useIntervals: isCheckedUseIntervals,
+                    useCustomFft: isCheckedCustomFft,
+                    type: convertingType,
+                    saveAndReturnOption: saveAndReturnOption,
+                    sentiment,
                     ...commonValues,
-                    // Fill AioOptionsDto specific fields here
                 } as AioOptionsDto;
                 break;
             case ConvertingType.ENERGY:
                 specificValues = {
+                    useCustomFft: isCheckedCustomFft,
+                    type: convertingType,
+                    saveAndReturnOption: saveAndReturnOption,
+                    config: configs ? configs[selectedConfigIndex]?._id : null,
                     ...commonValues,
-                    // Fill EnergyOptionsDto specific fields here
                 } as EnergyOptionsDto;
                 break;
             case ConvertingType.FREQUENCY:
@@ -140,20 +167,33 @@ const DynamicForm = (props: any) => {
                 break;
             case ConvertingType.INSTRUMENT:
                 specificValues = {
+                    useCustomFft: isCheckedCustomFft,
+                    type: convertingType,
+                    saveAndReturnOption: saveAndReturnOption,
+                    instrument,
+                    config: configs ? configs[selectedConfigIndex]?._id : null,
                     ...commonValues,
-                    // Fill InstrumentOptionsDto specific fields here
                 } as InstrumentOptionsDto;
                 break;
             case ConvertingType.SPEECH:
                 specificValues = {
+                    useCustomFft: isCheckedCustomFft,
+                    type: convertingType,
+                    saveAndReturnOption: saveAndReturnOption,
+                    sentiment,
+                    config: configs ? configs[selectedConfigIndex]?._id : null,
+                    familyCount,
                     ...commonValues,
-                    // Fill SentimentOptionsDto specific fields here
                 } as SentimentOptionsDto;
                 break;
             case ConvertingType.TEMPO:
                 specificValues = {
+                    useCustomFft: isCheckedCustomFft,
+                    type: convertingType,
+                    saveAndReturnOption: saveAndReturnOption,
+                    tempo,
+                    config: configs ? configs[selectedConfigIndex]?._id : null,
                     ...commonValues,
-                    // Fill TempoOptionsDto specific fields here
                 } as TempoOptionsDto;
                 break;
             default:
@@ -220,15 +260,34 @@ const DynamicForm = (props: any) => {
     switch (convertingType) {
         case ConvertingType.AIO:
             specificFormFields = (
-                <div>
-                    {/* Render AIO-specific form fields */}
+                <div className="form-container">
+                    <select className="form-select" id="sentiment" value={sentiment === null ? '' : sentiment} onChange={handleSentimentChange}>
+                        <option value=''>Select Senntiment</option>
+
+                        {Object.values(Sentiment).map((type) => (
+                            <option key={type} value={type}  >
+                                {type}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="form-group">
+                        <label htmlFor="useIntervals">useIntervals:</label>
+                        <input type="checkbox" checked={isCheckedUseIntervals} onChange={handleCheckboxChangeUseIntervals} className="input-container" />
+                    </div>
+                    {isCheckedUseIntervals && <div className="form-group">
+                        <label htmlFor="intervalCount">IntervalCount:</label>
+                        <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} className="input-container" />
+                    </div>}
                 </div>
             );
             break;
         case ConvertingType.ENERGY:
             specificFormFields = (
-                <div>
-                    {/* Render ENERGY-specific form fields */}
+                <div className="form-container">
+                    <div className="form-group">
+                        <label htmlFor="intervalCount">IntervalCount:</label>
+                        <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} />
+                    </div>
                 </div>
             );
             break;
@@ -290,22 +349,61 @@ const DynamicForm = (props: any) => {
             break;
         case ConvertingType.INSTRUMENT:
             specificFormFields = (
-                <div>
-                    {/* Render INSTRUMENT-specific form fields */}
+                <div className="form-container">
+                    <select className="form-select" id="instrument" value={instrument === null ? '' : instrument} onChange={handleInstrumentChange}>
+                        <option value=''>Select Instrument</option>
+                        {Object.values(Instrument).map((type) => (
+                            <option key={type} value={type}  >
+                                {type}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="form-group">
+                        <label htmlFor="intervalCount">IntervalCount:</label>
+                        <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} />
+                    </div>
                 </div>
             );
             break;
         case ConvertingType.SPEECH:
             specificFormFields = (
-                <div>
-                    {/* Render SENTIMENT-specific form fields */}
+                <div className="form-container">
+                    <div className="form-group">
+                        <label htmlFor="familyCount">familyCount:</label>
+                        <input type="text" id="familyCount" name="familyCount" value={familyCount || 0} onChange={handleFamilyCountCountChange} />
+                    </div>
+                    <label htmlFor="genre">Sentiment(Optional):</label>
+                    <select className="form-select" id="sentiment" value={sentiment === null ? '' : sentiment} onChange={handleSentimentChange}>
+                        <option value=''>Select Senntiment</option>
+
+                        {Object.values(Sentiment).map((type) => (
+                            <option key={type} value={type}  >
+                                {type}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="form-group">
+                        <label htmlFor="intervalCount">IntervalCount:</label>
+                        <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} />
+                    </div>
                 </div>
             );
             break;
         case ConvertingType.TEMPO:
             specificFormFields = (
-                <div>
-                    {/* Render TEMPO-specific form fields */}
+                <div className="form-container">
+                    <select className="form-select" id="tempo" value={tempo === null ? '' : tempo} onChange={handleTempoChange}>
+                        <option value=''>Select Tempo</option>
+                        {Object.values(Tempo).map((type) => (
+                            <option key={type} value={type}  >
+                                {type}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="form-group">
+                        <label htmlFor="intervalCount">IntervalCount:</label>
+                        <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} />
+                    </div>
                 </div>
             );
             break;
