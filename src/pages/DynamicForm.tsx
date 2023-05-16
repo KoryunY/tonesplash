@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { AioOptionsDto, Config, ConvertingType, Genre, SaveAndReturnOption } from '../Dto/AioOptions.dto'
+import { AioOptionsDto, Config, ConvertingType, Genre, Instrument, SaveAndReturnOption, Sentiment, Tempo } from '../Dto/AioOptions.dto'
 import { EnergyOptionsDto } from '../Dto/EnergyOptions.dto';
 import { FrequencyOptionsDto } from '../Dto/FrequencyOptions.dto';
 import { GenreOptionsDto } from '../Dto/GenreOptions.dto';
@@ -11,6 +11,11 @@ import './formStyles.css';
 const DynamicForm = (props: any) => {
     const [convertingType, setConvertingType] = useState<ConvertingType>(ConvertingType.FREQUENCY);
     const [genre, setGenre] = useState<Genre | null>(null);
+    const [tempo, setTempo] = useState<Tempo | null>(null);
+    const [instrument, setInstrument] = useState<Instrument | null>(null);
+    const [sentiment, setSentiment] = useState<Sentiment | null>(null);
+
+    const [gradientSplitCount, setGradientSplitCount] = useState<number | null>(null);
     const [saveAndReturnOption, setSaveAndReturnOption] = useState<SaveAndReturnOption>(SaveAndReturnOption.RETURN_DEMO);
     const [isCheckedCustomFft, setIsChecked] = useState(false);
     const [isCheckedUseIntervals, setIsCheckedUseIntervals] = useState(false);
@@ -80,6 +85,12 @@ const DynamicForm = (props: any) => {
             ...commonValues,
             [e.target.name]: e.target.value,
         });
+    };
+
+    const handleGradientSplitCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setGradientSplitCount(
+            parseInt(e.target.value),
+        );
     };
 
     const openNewPage = () => {
@@ -233,6 +244,10 @@ const DynamicForm = (props: any) => {
                         <label htmlFor="intervalCount">IntervalCount:</label>
                         <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} className="input-container" />
                     </div>}
+                    <div className="form-group">
+                        <label htmlFor="gradientSplitCount">gradientSplitCount:</label>
+                        <input type="text" id="gradientSplitCount" name="gradientSplitCount" value={gradientSplitCount || 0} onChange={handleGradientSplitCountChange} />
+                    </div>
                 </div>
             );
             break;
