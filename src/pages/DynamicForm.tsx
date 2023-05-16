@@ -12,13 +12,16 @@ const DynamicForm = (props: any) => {
     const [convertingType, setConvertingType] = useState<ConvertingType>(ConvertingType.FREQUENCY);
     const [genre, setGenre] = useState<Genre | null>(null);
     const [saveAndReturnOption, setSaveAndReturnOption] = useState<SaveAndReturnOption>(SaveAndReturnOption.RETURN_DEMO);
-    const [commonValues, setCommonValues] = useState({ name: '', intervalCount: 0 });
     const [isCheckedCustomFft, setIsChecked] = useState(false);
     const [isCheckedUseIntervals, setIsCheckedUseIntervals] = useState(false);
     const [htmlContent, setHtmlContent] = useState('');
     const [file, setFile] = useState('');
     const [configs, setConfigs] = useState<any[] | null>(null);
     const [selectedConfigIndex, setSelectedConfigIndex] = useState<number>(-1);
+    const [commonValues, setCommonValues] = useState({
+        name: '', intervalCount: 0, user: props.id,
+
+    });
 
     const handleConfigChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedIndex = parseInt(event.target.value);
@@ -32,7 +35,7 @@ const DynamicForm = (props: any) => {
             }).then(response => {
                 response.json().then(val => {
                     if (val && !configs) {
-                        setConfigs(val);
+                        setConfigs(val.configs);
                     }
                 })
             }).catch(err => {
@@ -63,7 +66,6 @@ const DynamicForm = (props: any) => {
     };
     const handleConvertingTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setConvertingType(e.target.value as ConvertingType);
-        console.log(configs)
     };
     const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setGenre(e.target.value as Genre);
@@ -94,6 +96,7 @@ const DynamicForm = (props: any) => {
         switch (convertingType) {
             case ConvertingType.AIO:
                 specificValues = {
+
                     ...commonValues,
                     // Fill AioOptionsDto specific fields here
                 } as AioOptionsDto;
@@ -108,17 +111,20 @@ const DynamicForm = (props: any) => {
                 specificValues = {
                     useIntervals: isCheckedUseIntervals,
                     useCustomFft: isCheckedCustomFft,
-                    user: props.id,
                     type: convertingType,
                     saveAndReturnOption: saveAndReturnOption,
                     ...commonValues,
-                    // Fill FrequencyOptionsDto specific fields here
                 } as FrequencyOptionsDto;
                 break;
             case ConvertingType.GENRE:
                 specificValues = {
+                    useCustomFft: isCheckedCustomFft,
+                    type: convertingType,
+                    saveAndReturnOption: saveAndReturnOption,
+                    useIntervals: isCheckedUseIntervals,
+                    genre,
+                    config: configs ? configs[selectedConfigIndex]?._id : null,
                     ...commonValues,
-                    // Fill GenreOptionsDto specific fields here
                 } as GenreOptionsDto;
                 break;
             case ConvertingType.INSTRUMENT:
@@ -152,35 +158,52 @@ const DynamicForm = (props: any) => {
     const handleSpecificFormSubmit = async (specificValues: any) => {
         // Handle the submission for each specific form separately
         console.log(specificValues);
+        console.log(convertingType);
         const formData = new FormData();
-        formData.append('audio', file); // Attach the file to the form data
-
+        formData.append('audio', file);
         for (const key in specificValues) {
-            formData.append(key, specificValues[key]);
+            if (specificValues[key])
+                formData.append(key, specificValues[key]);
         }
+
+        let url;
+        switch (convertingType) {
+            case ConvertingType.AIO:
+                url = 'http://localhost:3000/audio/aio'
+                break;
+            case ConvertingType.ENERGY:
+                url = 'http://localhost:3000/audio/energy'
+                break;
+            case ConvertingType.FREQUENCY:
+                url = 'http://localhost:3000/audio/frequency'
+                break;
+            case ConvertingType.GENRE:
+                url = 'http://localhost:3000/audio/genre'
+                break;
+            case ConvertingType.INSTRUMENT:
+                url = 'http://localhost:3000/audio/instrument'
+                break;
+            case ConvertingType.SPEECH:
+                url = 'http://localhost:3000/audio/sentiment'
+                break;
+            case ConvertingType.TEMPO:
+                url = 'http://localhost:3000/audio/tempo'
+                break;
+            default:
+                url = null;
+        };
+        if (!url) return;
         try {
-            const response = await fetch('http://localhost:3000/audio/frequency', {
+            const response = await fetch(url, {
                 method: 'POST',
                 body: formData
             });
-
             const htmlContent = await response.text();
-            // console.log(data);
             setHtmlContent(htmlContent);
-            //const encodedHtmlContent = encodeURIComponent(htmlContent);
-
-            // console.log(encodedHtmlContent)
-            //window.location.href = `/demo.html?htmlContent=${encodedHtmlContent}`; // Redirect to the demo.html page with the htmlContent as a query parameter
-            // Redirect to the new page
-            //window.location.href = '/new-page'; // Replace '/new-page' with the desired URL of the new page
-            //setHtmlContent(data); // Set the HTML content
-
-
         } catch (error) {
             console.error(error);
         }
-    };
-
+    }
     // Render the form fields based on the selected convertingType
     let specificFormFields;
     switch (convertingType) {
@@ -229,9 +252,9 @@ const DynamicForm = (props: any) => {
                     <div className="form-group">
                         <label htmlFor="genre">Genre(Optional):</label>
                         <select className="form-select" id="genre" value={genre === null ? '' : genre} onChange={handleGenreChange}>
-                            <option value="">Select Genre</option>
+                            <option value=''>Select Genre</option>
 
-                            {Object.values(Object).map((type) => (
+                            {Object.values(Genre).map((type) => (
                                 <option key={type} value={type}  >
                                     {type}
                                 </option>
@@ -240,7 +263,7 @@ const DynamicForm = (props: any) => {
 
                         <select className="form-select" id="configs" value={selectedConfigIndex} onChange={handleConfigChange}>
                             <option value="">Select Config</option>
-                            {configs?.map((config, index) => (
+                            {configs && Object.values(configs).map((config, index) => (
                                 <option key={index} value={index}>
                                     {config.name}
                                 </option>

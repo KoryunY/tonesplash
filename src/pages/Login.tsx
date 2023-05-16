@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import User from './User';
 function Login() {
@@ -7,6 +7,28 @@ function Login() {
     // const [age, setAge] = useState('');
     const [data, setData] = useState(null)
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const formData = { name: token };
+
+            const response = fetch('http://localhost:3000/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then(resp => {
+                resp.json().then(data => {
+                    if (data) {
+                        setData(data);
+                        localStorage.setItem('token', username);
+                    }
+                });
+            });
+
+        }
+    }, [username])
     const navigate = useNavigate();
 
     const handleSubmit = async (event: any) => {
@@ -25,7 +47,8 @@ function Login() {
 
             const data = await response.json();
             if (data) {
-                setData(data)
+                setData(data);
+                localStorage.setItem('token', username);
             }
         } catch (error) {
             console.error(error);
