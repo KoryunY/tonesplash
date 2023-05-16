@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { AioOptionsDto, ConvertingType, SaveAndReturnOption } from '../Dto/AioOptions.dto'
+import React, { useEffect, useMemo, useState } from 'react';
+import { AioOptionsDto, Config, ConvertingType, Genre, SaveAndReturnOption } from '../Dto/AioOptions.dto'
 import { EnergyOptionsDto } from '../Dto/EnergyOptions.dto';
 import { FrequencyOptionsDto } from '../Dto/FrequencyOptions.dto';
 import { GenreOptionsDto } from '../Dto/GenreOptions.dto';
@@ -10,12 +10,37 @@ import './formStyles.css';
 
 const DynamicForm = (props: any) => {
     const [convertingType, setConvertingType] = useState<ConvertingType>(ConvertingType.FREQUENCY);
+    const [genre, setGenre] = useState<Genre | null>(null);
     const [saveAndReturnOption, setSaveAndReturnOption] = useState<SaveAndReturnOption>(SaveAndReturnOption.RETURN_DEMO);
     const [commonValues, setCommonValues] = useState({ name: '', intervalCount: 0 });
     const [isCheckedCustomFft, setIsChecked] = useState(false);
     const [isCheckedUseIntervals, setIsCheckedUseIntervals] = useState(false);
     const [htmlContent, setHtmlContent] = useState('');
     const [file, setFile] = useState('');
+    const [configs, setConfigs] = useState<any[] | null>(null);
+    const [selectedConfigIndex, setSelectedConfigIndex] = useState<number>(-1);
+
+    const handleConfigChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedIndex = parseInt(event.target.value);
+        setSelectedConfigIndex(selectedIndex);
+        // You can access the selected config using `configs[selectedIndex]`
+    };
+    useEffect(() => {
+        if (!configs) {
+            fetch('http://localhost:3000/users/configs?id=' + props.id, {
+                method: 'GET'
+            }).then(response => {
+                response.json().then(val => {
+                    if (val && !configs) {
+                        setConfigs(val);
+                    }
+                })
+            }).catch(err => {
+                console.error(err.message)
+            });
+        }
+
+    }, []);
 
     const handleCheckboxChange = (e: any) => {
         setIsChecked(e.target.checked);
@@ -26,12 +51,22 @@ const DynamicForm = (props: any) => {
         setFile(selectedFile);
     };
 
+    useEffect(() => {
+        if (htmlContent) {
+            openNewPage()
+            setHtmlContent('');
+        }
+    }, [htmlContent])
 
     const handleCheckboxChangeUseIntervals = (e: any) => {
         setIsCheckedUseIntervals(e.target.checked);
     };
     const handleConvertingTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setConvertingType(e.target.value as ConvertingType);
+        console.log(configs)
+    };
+    const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setGenre(e.target.value as Genre);
     };
 
     const handleSaveAndReturnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -132,8 +167,8 @@ const DynamicForm = (props: any) => {
             const htmlContent = await response.text();
             // console.log(data);
             setHtmlContent(htmlContent);
-            const encodedHtmlContent = encodeURIComponent(htmlContent);
-            openNewPage()
+            //const encodedHtmlContent = encodeURIComponent(htmlContent);
+
             // console.log(encodedHtmlContent)
             //window.location.href = `/demo.html?htmlContent=${encodedHtmlContent}`; // Redirect to the demo.html page with the htmlContent as a query parameter
             // Redirect to the new page
@@ -180,8 +215,38 @@ const DynamicForm = (props: any) => {
             break;
         case ConvertingType.GENRE:
             specificFormFields = (
-                <div>
-                    {/* Render GENRE-specific form fields */}
+                <div className="form-container">
+                    <div className="form-group">
+                        <label htmlFor="useIntervals">useIntervals:</label>
+                        <input type="checkbox" checked={isCheckedUseIntervals} onChange={handleCheckboxChangeUseIntervals} />
+                    </div>
+
+                    {isCheckedUseIntervals && <div className="form-group">
+                        <label htmlFor="intervalCount">IntervalCount:</label>
+                        <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} />
+                    </div>}
+
+                    <div className="form-group">
+                        <label htmlFor="genre">Genre(Optional):</label>
+                        <select className="form-select" id="genre" value={genre === null ? '' : genre} onChange={handleGenreChange}>
+                            <option value="">Select Genre</option>
+
+                            {Object.values(Object).map((type) => (
+                                <option key={type} value={type}  >
+                                    {type}
+                                </option>
+                            ))}
+                        </select>
+
+                        <select className="form-select" id="configs" value={selectedConfigIndex} onChange={handleConfigChange}>
+                            <option value="">Select Config</option>
+                            {configs?.map((config, index) => (
+                                <option key={index} value={index}>
+                                    {config.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
             );
             break;
