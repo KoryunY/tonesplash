@@ -25,7 +25,7 @@ function Menu(props: any) {
     ];
 
     return (
-        <nav className="menu">
+        <nav className="menu disableCaret">
             <div className="logo">
                 <Link to="/">
                     <img src={logo} alt="Logo" style={{ width: "200px" }} />

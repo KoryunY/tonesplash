@@ -1,3 +1,11 @@
 .flex-container {
     display: flex;
 }
+
+/* Remove caret */
+input:focus,
+select:focus {
+    caret-color: #f0f0f0;
+    -webkit-caret-color: #f0f0f0;
+    /* For Safari support */
+}

@@ -1,37 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Configs from './Configs';
+import Data from './Data';
 import DynamicForm from './DynamicForm';
+import './listStyles.css'
 function User(props: any) {
-    const [username, setUsername] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [age, setAge] = useState('');
-    const navigate = useNavigate();
+    const [selectedItem, setSelectedItem] = useState('');
 
-    const handleSubmit = async (event: any) => {
-        event.preventDefault();
-
-        const formData = { name: username };
-
-        try {
-            const response = await fetch('http://localhost:3000/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.error(error);
+    const renderPage = () => {
+        switch (selectedItem) {
+            case 'DynamicForm':
+                return <DynamicForm id={props.user._id} />;
+            case 'Configs':
+                return <Configs id={props.user._id} />;
+            case 'Data':
+                return <Data id={props.user._id} />;
+            default:
+                return null;
         }
     };
 
     return (
-        <div>
-            {props.user._id && <DynamicForm id={props.user._id} />}
-
+        <div className='disableCaret'>
+            <ul>
+                <li onClick={() => setSelectedItem('DynamicForm')}>Generate Colors</li>
+                <li onClick={() => setSelectedItem('Configs')}>Create Configs</li>
+                <li onClick={() => setSelectedItem('Data')}>User Info</li>
+            </ul>
+            {renderPage()}
         </div>
     );
 }
