@@ -4,8 +4,9 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 5px;
+    background-color: #f5d3d4;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .form-group {
@@ -36,8 +37,8 @@
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #c0a4fb;
+    color: #593353;
     font-weight: bold;
     border: none;
     border-radius: 3px;
@@ -45,5 +46,10 @@
 }
 
 .form-button:hover {
+    background-color: #593353;
+    color: #c0a4fb;
+}
+
+.input-container {
     background-color: #45a049;
 }

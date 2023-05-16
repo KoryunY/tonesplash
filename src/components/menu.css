@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
+    background-color: #f5d3d4;
     padding: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -26,11 +26,19 @@
 }
 
 .menu-item a {
+    cursor: default;
+    pointer-events: none;
     text-decoration: none;
-    color: #333;
+    color: #57304f;
     font-weight: bold;
+    text-decoration: dotted;
 }
 
 .menu-item.active a {
     color: #f00;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bold;
 }

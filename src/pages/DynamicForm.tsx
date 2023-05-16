@@ -168,12 +168,12 @@ const DynamicForm = (props: any) => {
                 <div className="form-container">
                     <div className="form-group">
                         <label htmlFor="useIntervals">useIntervals:</label>
-                        <input type="checkbox" checked={isCheckedUseIntervals} onChange={handleCheckboxChangeUseIntervals} />
+                        <input type="checkbox" checked={isCheckedUseIntervals} onChange={handleCheckboxChangeUseIntervals} className="input-container" />
                     </div>
 
                     {isCheckedUseIntervals && <div className="form-group">
                         <label htmlFor="intervalCount">IntervalCount:</label>
-                        <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} />
+                        <input type="text" id="intervalCount" name="intervalCount" value={commonValues.intervalCount} onChange={handleCommonInputChange} className="input-container" />
                     </div>}
                 </div>
             );

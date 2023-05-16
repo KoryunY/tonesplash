@@ -28,18 +28,18 @@ function Menu(props: any) {
         <nav className="menu">
             <div className="logo">
                 <Link to="/">
-                    <img src={logo} alt="Logo" style={{ "width": "50px" }} />
+                    <img src={logo} alt="Logo" style={{ width: "200px" }} />
                 </Link>
             </div>
-            <div className="menu-items">
+            <div className="menu-items" style={{ textDecoration: "none" }}>
                 {menuItems.map((item) => (
                     <Link
                         key={item.name}
                         to={item.link}
-                        className={currentPage === item.name ? 'active' : ''}
+                    // className={currentPage === item.name ? 'active' : ''}
                     >
-                        <div className="menu-item">
-                            <span>{item.name}</span>
+                        <div className="menu-item" style={{}}>
+                            <span style={{ color: "#57304f", textDecoration: "none" }}>{item.name}</span>
                         </div>
                     </Link>
                 ))}

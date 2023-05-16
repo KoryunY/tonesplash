@@ -37,10 +37,12 @@ function Login() {
             {!data && <form onSubmit={handleSubmit}>
                 <label>
                     Username:
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} style={{
+                        backgroundColor: "#f5d3d4"
+                    }} />
                 </label>
-                <button type="submit">Login</button>
-                <button onClick={() => navigate("/register")}>Register</button>
+                <button type="submit" style={{ color: "#593353", backgroundColor: "#c0a4fb", borderRadius: "40px", marginLeft: "10px" }}>Login</button>
+                <button onClick={() => navigate("/register")} style={{ color: "#593353", backgroundColor: "#c0a4fb", borderRadius: "40px", marginLeft: "5px" }}>Register</button>
             </form>}
             {data && <User user={data} />}
         </div>
