@@ -63,3 +63,7 @@
     /* IE 10+ */
     user-select: none;
 }
+
+.form-outer-button {
+    width: 10%;
+}

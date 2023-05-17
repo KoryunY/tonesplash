@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import * as jsonData from './data.json';
-import './popupStyles.css'
+import './popupStyles.css';
+import "./formStyles.css"
+
 interface PopupProps {
     onClose: () => void;
 }
@@ -73,7 +75,7 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
     };
 
     return (
-        <div className="popup">
+        <div className="popup form-container">
             {generateTable()}
             <div className="table-wrapper">
                 <table className="description-table">
@@ -107,7 +109,7 @@ const Popup: React.FC<PopupProps> = ({ onClose }) => {
                     </tbody>
                 </table>
             </div>
-            <button onClick={onClose}>Close</button>
+            <button className="form-button" onClick={onClose}>Close</button>
         </div>
     );
 };

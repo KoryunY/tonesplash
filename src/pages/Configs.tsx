@@ -183,6 +183,7 @@ function Configs(props: any) {
 
     return (
         <div className="flex-container">
+            <button className="form-button form-outer-button form-container" onClick={openPopup}>Defaults</button>
             {renderTree()}
             <div className="form-container">
                 <input type="text" id="newConfigName" placeholder="New Config Name" />
@@ -192,7 +193,6 @@ function Configs(props: any) {
                 <button className="form-button" onClick={handleAddNewConfig}>Add Config</button>
             </div>
             <br />
-            <button className="form-button" onClick={openPopup}>Defaults</button>
             {showPopup && <Popup onClose={closePopup} />}
         </div>
     );

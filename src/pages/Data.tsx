@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import "./formStyles.css"
 
 function Data(props: any) {
     const [data, setData] = useState(null);
@@ -85,7 +86,7 @@ function Data(props: any) {
 
     const renderTree = (data: any) => {
         return (
-            <div >
+            <div className="form-container">
                 <span>Name:{data?.name}</span>
                 <select className="form-select" id="configs" value={selectedAudio} onChange={handleAudioChange}>
                     <option value="">Select Generated Colors</option>
