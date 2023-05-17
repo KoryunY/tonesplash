@@ -19,7 +19,7 @@ function Configs(props: any) {
     };
 
     useEffect(() => {
-        fetch('http://localhost:3000/users/configs?id=' + props.id, {
+        fetch(process.env.REACT_APP_URL+'/users/configs?id=' + props.id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ function Configs(props: any) {
         requestConfig.name = updatedConfigs[configId].name;
         requestConfig.type = updatedConfigs[configId].type;
         requestConfig.colors = updatedConfigs[configId].colors;
-        fetch('http://localhost:3000/config?id=' + updatedConfigs[configId]._id, {
+        fetch(process.env.REACT_APP_URL + '/config?id=' + updatedConfigs[configId]._id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ function Configs(props: any) {
     const handleDelete = (configId: any) => {
         const updatedConfigs: any = [...configs];
 
-        fetch('http://localhost:3000/config?id=' + updatedConfigs[configId]._id, {
+        fetch(process.env.REACT_APP_URL + '/config?id=' + updatedConfigs[configId]._id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ function Configs(props: any) {
         requestConfig.type = type;
         requestConfig.colors = colors;
 
-        fetch('http://localhost:3000/config?id=' + props.id, {
+        fetch(process.env.REACT_APP_URL + '/config?id=' + props.id, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

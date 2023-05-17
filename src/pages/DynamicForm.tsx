@@ -37,7 +37,7 @@ const DynamicForm = (props: any) => {
     };
     useEffect(() => {
         if (!configs) {
-            fetch('http://localhost:3000/users/configs?id=' + props.id, {
+            fetch('/users/configs?id=' + props.id, {
                 method: 'GET'
             }).then(response => {
                 response.json().then(val => {
@@ -220,25 +220,25 @@ const DynamicForm = (props: any) => {
         let url;
         switch (convertingType) {
             case ConvertingType.AIO:
-                url = 'http://localhost:3000/audio/aio'
+                url = process.env.REACT_APP_URL + '/audio/aio'
                 break;
             case ConvertingType.ENERGY:
-                url = 'http://localhost:3000/audio/energy'
+                url = process.env.REACT_APP_URL + '/audio/energy'
                 break;
             case ConvertingType.FREQUENCY:
-                url = 'http://localhost:3000/audio/frequency'
+                url = process.env.REACT_APP_URL + '/audio/frequency'
                 break;
             case ConvertingType.GENRE:
-                url = 'http://localhost:3000/audio/genre'
+                url = process.env.REACT_APP_URL + '/audio/genre'
                 break;
             case ConvertingType.INSTRUMENT:
-                url = 'http://localhost:3000/audio/instrument'
+                url = process.env.REACT_APP_URL + '/audio/instrument'
                 break;
             case ConvertingType.SPEECH:
-                url = 'http://localhost:3000/audio/sentiment'
+                url = process.env.REACT_APP_URL + '/audio/sentiment'
                 break;
             case ConvertingType.TEMPO:
-                url = 'http://localhost:3000/audio/tempo'
+                url = process.env.REACT_APP_URL + '/audio/tempo'
                 break;
             default:
                 url = null;

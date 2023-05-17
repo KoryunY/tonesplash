@@ -11,8 +11,7 @@ function Login() {
         const token = localStorage.getItem('token');
         if (token) {
             const formData = { name: token };
-
-            fetch('http://localhost:3000/users/login', {
+            fetch(process.env.REACT_APP_URL + '/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,7 +34,7 @@ function Login() {
         const formData = { name: username };
 
         try {
-            const response = await fetch('http://localhost:3000/users/login', {
+            const response = await fetch(process.env.REACT_APP_URL + '/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -9,7 +9,7 @@ function Data(props: any) {
     const [htmlContent, setHtmlContent] = useState<any>(null);
 
     useEffect(() => {
-        fetch('http://localhost:3000/users?id=' + props.id, {
+        fetch(process.env.REACT_APP_URL + '/users?id=' + props.id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ function Data(props: any) {
         formData.append('data', JSON.stringify(data));
         formData.append('audio', audio);
 
-        fetch('http://localhost:3000/audio/html', {
+        fetch(process.env.REACT_APP_URL + '/audio/html', {
             method: 'POST',
             body: formData
         }).then(response => {
@@ -70,7 +70,7 @@ function Data(props: any) {
 
     const handlePlay = () => {
         if (audios) {
-            fetch('http://localhost:3000/audio?id=' + audios[selectedAudio], {
+            fetch(process.env.REACT_APP_URL + '/audio?id=' + audios[selectedAudio], {
                 method: 'GET'
             }).then(response => {
                 response.json().then(val => {
