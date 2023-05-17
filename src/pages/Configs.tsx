@@ -103,14 +103,12 @@ function Configs(props: any) {
     };
 
     const handleAddConfig = (name: any, type: any, colors: any) => {
-
-        const updatedConfigs: any = [...configs];
         let requestConfig: any = {};
         requestConfig.name = name;
         requestConfig.type = type;
         requestConfig.colors = colors;
 
-        fetch('http://localhost:3000/config?id=' + updatedConfigs[0].user, {
+        fetch('http://localhost:3000/config?id=' + props.id, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
