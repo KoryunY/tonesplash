@@ -6,8 +6,6 @@ import "./formStyles.css"
 function Configs(props: any) {
     const [configs, setConfigs] = useState([]);
     const [stateChange, setStateChange] = useState(0);
-    const [newColor, setNewColor] = useState('');
-    const [selectedColorIndex, setSelectedColorIndex] = useState(-1);
     const [showPopup, setShowPopup] = useState(false);
 
     const openPopup = () => {
