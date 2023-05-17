@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Configs from './Configs';
-import Configs2 from './Configs2';
 import Data from './Data';
 import DynamicForm from './DynamicForm';
 import './listStyles.css'
@@ -13,7 +12,7 @@ function User(props: any) {
             case 'DynamicForm':
                 return <DynamicForm id={props.user._id} />;
             case 'Configs':
-                return <Configs2 id={props.user._id} />;
+                return <Configs id={props.user._id} />;
             case 'Data':
                 return <Data id={props.user._id} />;
             default:
